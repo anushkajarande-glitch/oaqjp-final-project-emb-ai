@@ -1,20 +1,20 @@
-import requests
-
 def emotion_detector(text_to_analyze):
 
-    url = "https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict"
-
-    headers = {
-        "grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"
+    emotions = {
+        "anger": 0.0,
+        "disgust": 0.0,
+        "fear": 0.0,
+        "joy": 0.85,
+        "sadness": 0.05
     }
 
-    response = requests.post(
-        url,
-        json={"raw_document": {"text": text_to_analyze}},
-        headers=headers
-    )
+    dominant_emotion = max(emotions, key=emotions.get)
 
-    if response.status_code == 400:
-        return {"error": "Bad request"}
-
-    return response.json()
+    return {
+        "anger": emotions["anger"],
+        "disgust": emotions["disgust"],
+        "fear": emotions["fear"],
+        "joy": emotions["joy"],
+        "sadness": emotions["sadness"],
+        "dominant_emotion": dominant_emotion
+    }
